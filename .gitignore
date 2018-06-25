@@ -1,3 +1,9 @@
-__pycache__/*
-.idea/*
+.idea
 
+__pycache__/
+*.py[cod]
+*$py.class
+
+.vscode
+
+index_files
