@@ -2,7 +2,7 @@ import os
 import tools
 import nltk
 from InvertedIndex import getIndex
-from LanguageAnalysis import stemming
+from LanguageAnalysis import languageAnalysis
 from Serching import searchWord
 from BoolSearch import BoolSearchDel
 from scoreQuery import sortDoc
@@ -26,7 +26,7 @@ print(doc_num)
 #DTWEIGHT = TermDocWeight.get_matrix(INDEX)
 
 print("loading the wordnet...")
-stemming.lemmatize_sentence("a", False)
+languageAnalysis.lemmatize_sentence("a", False)
 
 LOOP = True
 print("=================Searching System=================")
@@ -41,7 +41,7 @@ while LOOP:
             break
 
         print("stemming...")
-        INPUT_WORDS = stemming.lemmatize_sentence(STATEMENT, True)
+        INPUT_WORDS = languageAnalysis.lemmatize_sentence(STATEMENT, True)
         print(INPUT_WORDS)
 
         DOC_LIST = BoolSearchDel.bool_search(INPUT_WORDS, INDEX)
@@ -53,7 +53,7 @@ while LOOP:
         print("input the K:")
         K = input()
         print("stemming...")
-        INPUT_WORDS = stemming.lemmatize_sentence(STATEMENT, True)
+        INPUT_WORDS = languageAnalysis.lemmatize_sentence(STATEMENT, True)
         print(INPUT_WORDS)
         DOC_LIST = sortDoc.score_search(INPUT_WORDS, INDEX, K)  
     elif method == "EXIT":

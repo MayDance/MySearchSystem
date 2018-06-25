@@ -4,16 +4,16 @@ import tqdm
 import pickle
 
 from . import vbCode
-from . import _test_stemming
+from LanguageAnalysis import languageAnalysis
 
 
 class InvertedIndex:
-    def __init__(self, _doc_path, _get_item_list, _store_path="\\index_files"):
+    def __init__(self, _store_path="\\index_files"):
         self.__inverted_index = dict()
         self.__store_path = os.getcwd() + _store_path
-        self.__doc_path = os.getcwd() + _doc_path
-        self.__get_item_list = _get_item_list
         self.__store_file_name = 'index.index'
+        self.__analyzer = languageAnalysis.LangAnalysis()
+        self.__doc_count = self.__analyzer.get_doc_count()
         if os.path.exists(self.__store_path):
             index_file_names = os.listdir(self.__store_path)
             if self.__store_file_name not in index_file_names:
@@ -122,22 +122,18 @@ class InvertedIndex:
             filemode="w",
             format='%(asctime)s - %(pathname)s[line:%(lineno)d] - %(levelname)s: %(message)s'
         )
-
         logging.debug("start to create index")
         print("start to create index", flush=True)
         _inverted_index = self.__inverted_index
+        _doc_file_names = self.__analyzer.get_file_list()
+        _doc_count = self.__doc_count
         _get_doc_id = lambda _doc_file_name: int(_doc_file_name.split(".")[0])
-        _doc_file_names = os.listdir(self.__doc_path)
-        _doc_count = len(_doc_file_names)
-        self.__doc_count = _doc_count
-        _doc_file_names.sort(key=_get_doc_id)
-        logging.debug("end sorting with the doc id")
         _progress_bar = tqdm.tqdm(total=_doc_count)
 
         for _doc_file_name in _doc_file_names:
             logging.debug("start process " + _doc_file_name)
             _doc_id = _get_doc_id(_doc_file_name)
-            _item_list = self.__get_item_list(self.__doc_path + "\\" + _doc_file_name)
+            _item_list = self.__analyzer.get_item_list(_doc_file_name)
             # logging.debug("items: " + ','.join(_item_list))
             _item_list_without_repetition = list()
             for _position, _word_item in enumerate(_item_list):
@@ -159,15 +155,6 @@ class InvertedIndex:
         self.__store_index()
 
 
-def _test_get_item_list(doc_file_name):
-        file = open(doc_file_name, 'r')
-        content = file.read()
-        words = _test_stemming.lemmatize_sentence(content, False)
-        file.close()
-        return words
-
-
-
 
 if __name__ == "__main__":
     # nltk.download("wordnet")
@@ -175,7 +162,7 @@ if __name__ == "__main__":
     # nltk.download("punkt")
     # nltk.download("maxnet_treebank_pos_tagger")
 
-    invertedIndex = InvertedIndex(_doc_path="\\Reuters", _get_item_list=_test_get_item_list)
+    invertedIndex = InvertedIndex()
     index = invertedIndex.get_index()
     item_list = invertedIndex.get_item_list()
     doc_count = invertedIndex.get_doc_num()
