@@ -8,11 +8,11 @@ from . import _test_stemming
 
 
 class InvertedIndex:
-    def __init__(self, _doc_path, _get_item_list, _store_path="\\index_files"):
+    def __init__(self, doc_path, get_item_list, store_path="\\index_files"):
         self.__inverted_index = dict()
-        self.__store_path = os.getcwd() + _store_path
-        self.__doc_path = os.getcwd() + _doc_path
-        self.__get_item_list = _get_item_list
+        self.__store_path = os.getcwd() + store_path
+        self.__doc_path = os.getcwd() + doc_path
+        self.__get_item_list = get_item_list
         self.__store_file_name = 'index.index'
         if os.path.exists(self.__store_path):
             index_file_names = os.listdir(self.__store_path)
@@ -35,6 +35,7 @@ class InvertedIndex:
         _temp_data = pickle.load(_file)
         _temp_inverted_index = _temp_data["index_data"]
         self.__doc_count = _temp_data["doc_count"]
+        self.__doc_id_list = _temp_data["doc_id_list"]
         _progress_bar = tqdm.tqdm(total=len(_temp_inverted_index))
         self.__inverted_index = dict()
         for _temp_index_item in _temp_inverted_index:
@@ -103,7 +104,7 @@ class InvertedIndex:
         print("")
         print("Storing finished")
         _file = open(self.__store_path + "\\" + self.__store_file_name, 'wb')
-        pickle.dump({"doc_count": self.__doc_count, "index_data": _temp_inverted_index}, _file)
+        pickle.dump({"doc_id_list": self.__doc_id_list, "doc_count": self.__doc_count, "index_data": _temp_inverted_index}, _file)
         _file.close()
 
     def get_index(self):
@@ -114,6 +115,9 @@ class InvertedIndex:
 
     def get_doc_count(self):
         return self.__doc_count
+
+    def get_doc_id_list(self):
+        return self.__doc_id_list
 
     def __create_index(self):
         logging.basicConfig(
@@ -133,10 +137,11 @@ class InvertedIndex:
         _doc_file_names.sort(key=_get_doc_id)
         logging.debug("end sorting with the doc id")
         _progress_bar = tqdm.tqdm(total=_doc_count)
-
+        self.__doc_id_list = list()
         for _doc_file_name in _doc_file_names:
             logging.debug("start process " + _doc_file_name)
             _doc_id = _get_doc_id(_doc_file_name)
+            self.__doc_id_list.append(_doc_id)
             _item_list = self.__get_item_list(self.__doc_path + "\\" + _doc_file_name)
             # logging.debug("items: " + ','.join(_item_list))
             _item_list_without_repetition = list()
@@ -175,7 +180,7 @@ if __name__ == "__main__":
     # nltk.download("punkt")
     # nltk.download("maxnet_treebank_pos_tagger")
 
-    invertedIndex = InvertedIndex(_doc_path="\\Reuters", _get_item_list=_test_get_item_list)
+    invertedIndex = InvertedIndex(doc_path="\\Reuters", get_item_list=_test_get_item_list)
     index = invertedIndex.get_index()
     item_list = invertedIndex.get_item_list()
     doc_count = invertedIndex.get_doc_num()
