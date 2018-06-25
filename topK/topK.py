@@ -11,7 +11,7 @@ class TopK:
         self.build_heap()
 
     def build_heap(self):
-        self.heap = np.array([score, docID])
+        self.heap = np.array([self.score, self.docID])
         self.heap = np.transpose(self.heap)
         self.heap = np.row_stack((np.array([0, 0]), self.heap))
         self.len = len(self.heap)

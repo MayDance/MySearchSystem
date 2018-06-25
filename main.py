@@ -20,11 +20,14 @@ print("getting index...")
 INDEX = getIndex.get_index()
 item_list = getIndex.get_item_list()
 doc_num = getIndex.get_doc_count()
-
-print(item_list)
-print(doc_num)
-#DTWEIGHT = TermDocWeight.get_matrix(INDEX)
-
+doc_list = getIndex.get_doc_id_list()
+#print(item_list)
+#print(doc_num)
+#print(doc_list)
+print("building vector space...")
+tdm = TermDocWeight.TermDocWeight(INDEX, item_list, doc_list, doc_num)
+#DTWEIGHT = tdm.get_tdwm()
+#print(DTWEIGHT);
 print("loading the wordnet...")
 stemming.lemmatize_sentence("a", False)
 
@@ -55,7 +58,7 @@ while LOOP:
         print("stemming...")
         INPUT_WORDS = stemming.lemmatize_sentence(STATEMENT, True)
         print(INPUT_WORDS)
-        DOC_LIST = sortDoc.score_search(INPUT_WORDS, INDEX, K)  
+        DOC_LIST = sortDoc.score_search(INPUT_WORDS, tdm, INDEX, K)  
     elif method == "EXIT":
         break
     else:
