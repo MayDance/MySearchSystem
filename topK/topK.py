@@ -31,9 +31,9 @@ class TopK:
         if max != i:
             self.swap(max, i)
             self.heapify(max)
-        parent = i // 2
-        if parent != 0:
-            self.heapify(parent)
+        #parent = i // 2
+        #if parent != 0:
+        #    self.heapify(parent)
 
     def swap(self, a, b):
         t = self.heap[a][0]

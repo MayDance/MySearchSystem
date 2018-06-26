@@ -10,10 +10,11 @@ class TermDocWeight:
         self.docid_list = docid_list
         self.doc_count = doc_count
         self.num_to_docid = np.zeros((doc_count, 2))
-        self.tdwm = np.zeros((doc_count, len(item_list)))
-        self.build_tdwm()
+        #self.tdwm = np.zeros((doc_count, len(item_list)))
+        #self.build_tdwm()
             
     def build_tdwm(self) :
+        self.tdwm = np.zeros((self.doc_count, len(self.item_list)))
         for i in range(0, len(self.item_list)):
             index_item = self.index[self.item_list[i]]
             idf = math.log10(self.doc_count/index_item['df'])
@@ -23,6 +24,10 @@ class TermDocWeight:
                 #print(key)
                 num = (self.docid_list).index(key)
                 self.tdwm[num][i]=item_doc[key]['tf']*idf
+        np.save("tdwm.npy", self.tdwm)
+    
+    def load_tdwm(self) :
+        self.tdwm = np.load("tdwm.npy")
 
     def get_tdwm(self) :
         return self.tdwm

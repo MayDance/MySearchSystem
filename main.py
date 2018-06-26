@@ -15,19 +15,24 @@ if choose == "Y":
     nltk.download("averaged_perceptron_tagger")
     nltk.download("punkt")
     nltk.download("maxnet_treebank_pos_tagger")
-
 print("getting index...")
 INDEX = getIndex.get_index()
 item_list = getIndex.get_item_list()
 doc_num = getIndex.get_doc_count()
 doc_list = getIndex.get_doc_id_list()
+tdm = TermDocWeight.TermDocWeight(INDEX, item_list, doc_list, doc_num)
+if choose == "Y":
+    print("building vector space...")
+    tdm.build_tdwm()
+print("getting vector space")
+tdm.load_tdwm()
 #print(item_list)
 #print(doc_num)
 #print(doc_list)
-print("building vector space...")
-tdm = TermDocWeight.TermDocWeight(INDEX, item_list, doc_list, doc_num)
-#DTWEIGHT = tdm.get_tdwm()
-#print(DTWEIGHT);
+
+DTWEIGHT = tdm.get_tdwm()
+print(DTWEIGHT);
+print(DTWEIGHT.sum(axis=1))
 print("loading the wordnet...")
 stemming.lemmatize_sentence("a", False)
 
