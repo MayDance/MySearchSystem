@@ -10,7 +10,10 @@ from LanguageAnalysis import languageAnalysis
 class InvertedIndex:
     def __init__(self, _store_path="\\index_files"):
         self.__inverted_index = dict()
-        self.__store_path = os.getcwd() + _store_path
+        self.__store_path = os.getcwd() + store_path
+        self.__doc_path = os.getcwd() + doc_path
+        self.__items_frequency = None
+        self.__get_item_list = get_item_list
         self.__store_file_name = 'index.index'
         self.__analyzer = languageAnalysis.LangAnalysis()
         self.__doc_count = self.__analyzer.get_doc_count()
@@ -110,7 +113,7 @@ class InvertedIndex:
         _file.close()
 
     def get_index(self):
-        return self.__inverted_index.copy()  # shallow copy
+        return self.__inverted_index
 
     def get_item_list(self):
         return list(self.__inverted_index.keys())
@@ -120,6 +123,16 @@ class InvertedIndex:
 
     def get_doc_id_list(self):
         return self.__doc_id_list
+
+    def get_items_frequency(self):
+        if self.__items_frequency is None:
+            self.__items_frequency = dict()
+            for _word_item in self.__inverted_index:
+                _frequency = 0
+                for _doc_id in self.__inverted_index[_word_item]["doc_list"]:
+                    _frequency += self.__inverted_index[_word_item]["doc_list"][_doc_id]["tf"]
+                self.__items_frequency[_word_item] = _frequency
+        return self.__items_frequency
 
     def __create_index(self):
         logging.basicConfig(
