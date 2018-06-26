@@ -32,8 +32,7 @@ tdm.load_tdwm()
 #print(doc_list)
 
 DTWEIGHT = tdm.get_tdwm()
-print(DTWEIGHT);
-print(DTWEIGHT.sum(axis=1))
+print(type(DTWEIGHT));
 print("loading the wordnet...")
 
 LOOP = True
@@ -48,11 +47,13 @@ while LOOP:
         if STATEMENT == "EXIT":
             break
 
+
         print("Normalizing query statement...")
         INPUT_WORDS = languageAnalysis.normalize(STATEMENT, True)
         print(INPUT_WORDS)
+        POSTPHRASE = BoolSearchDel.infix_to_postfix(INPUT_WORDS)
 
-        DOC_LIST = BoolSearchDel.bool_search(INPUT_WORDS, INDEX)
+        DOC_LIST = BoolSearchDel.bool_search(POSTPHRASE, INDEX)
     elif method == "SCORE":
         print("input the query statement(EXIT to quit):")
         STATEMENT = input()

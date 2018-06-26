@@ -24,16 +24,31 @@ class TermDocWeight:
                 #print(key)
                 num = (self.docid_list).index(key)
                 self.tdwm[num][i]=item_doc[key]['tf']*idf
-        np.save("tdwm.npy", self.tdwm)
+        self.tdwmdic = {}
+        col = []
+        for i in range(0, self.doc_count):
+            col = []
+            data = []
+            for j in range(0, len(self.item_list)):
+                if self.tdwm[i][j] != 0:
+                    col.append(j)
+                    data.append(self.tdwm[i][j])
+            self.tdwmdic[self.docid_list[i]] = [col, data]
+        f = open('tdwm.txt','w')  
+        f.write(str(self.tdwmdic))  
+        f.close()  
     
     def load_tdwm(self) :
-        self.tdwm = np.load("tdwm.npy")
-
+        f = open('tdwm.txt','r')  
+        a = f.read()  
+        self.tdwmdic = eval(a)  
+        f.close() 
+        
     def get_tdwm(self) :
-        return self.tdwm
+        return self.tdwmdic
     
     def get_vd(self, search_docid_list):
-        doc_vector = []
+        doc_vector = {}
         for i in search_docid_list:         
-            doc_vector.append(self.tdwm[self.docid_list.index(i)])
+            doc_vector[i] = self.tdwmdic[i]
         return doc_vector

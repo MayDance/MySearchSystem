@@ -45,11 +45,43 @@ def infix_to_postfix(input_list):
         postfix.append(temp)
     if len(stack):
         postfix += stack[::-1]
-    return postfix
+    return list_to_phrase(postfix)
 
 
-def bool_search(query, index):
-    postfix = infix_to_postfix(query)
+def list_to_phrase(list):
+    list2 = []
+    for element in list:
+        if len(element) > 1:
+            if element == 'AND' or element == 'OR' or element == 'NOT':
+                list2.append([element])
+                continue
+            str = ""
+            for word in element:
+                str = str + ' ' + word
+            list2.append([str[1:]])
+        else:
+            list2.append(element)
+    return list2
+
+
+def phrase_to_list(list):
+    list2 = []
+    for element in list:
+        word=element[0]
+        if word == 'AND' or word == 'OR' or word == 'NOT':
+            list2.append(word)
+            continue
+        if word.find(' ') != -1:
+            l = word.split(" ")
+            list2.append(l)
+        else:
+            list2.append(element)
+    return list2
+
+
+def bool_search(postfix, index):
+    postfix = phrase_to_list(postfix)
+    # postfix = infix_to_postfix(query)
     result = []
     limit = len(postfix)
     i = 0
