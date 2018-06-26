@@ -63,6 +63,7 @@ while LOOP:
         print("Normalizing query statement...")
         INPUT_WORDS = languageAnalysis.normalize(STATEMENT, True)
         print(INPUT_WORDS)
+        OLD_INPUT_WORDS = INPUT_WORDS.copy()
         valid_input = True
         for word in INPUT_WORDS:
             if word in item_list:
@@ -76,7 +77,11 @@ while LOOP:
                     valid_input = False
                     break
         if valid_input:
-            DOC_LIST = sortDoc.score_search(INPUT_WORDS, tdm, INDEX, K)
+            if OLD_INPUT_WORDS != INPUT_WORDS:
+                print("Maybe you are searching for %s" % INPUT_WORDS)
+                DOC_LIST = sortDoc.score_search(INPUT_WORDS, tdm, INDEX, K)
+            else:
+                DOC_LIST = sortDoc.score_search(INPUT_WORDS, tdm, INDEX, K)
         else:
             DOC_LIST = []
     elif method == "EXIT":
