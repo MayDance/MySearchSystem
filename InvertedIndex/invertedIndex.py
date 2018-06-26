@@ -10,14 +10,12 @@ from LanguageAnalysis import languageAnalysis
 class InvertedIndex:
     def __init__(self, _store_path="\\index_files"):
         self.__inverted_index = dict()
-        self.__store_path = os.getcwd() + store_path
-        self.__doc_path = os.getcwd() + doc_path
-        self.__items_frequency = None
-        self.__get_item_list = get_item_list
+        self.__store_path = os.getcwd() + _store_path
         self.__store_file_name = 'index.index'
         self.__analyzer = languageAnalysis.LangAnalysis()
         self.__doc_count = self.__analyzer.get_doc_count()
         self.__doc_id_list = self.__analyzer.get_doc_id_list()
+        self.__items_frequency = None
         if os.path.exists(self.__store_path):
             index_file_names = os.listdir(self.__store_path)
             if self.__store_file_name not in index_file_names:
