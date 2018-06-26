@@ -78,6 +78,37 @@ while LOOP:
                     break
         if valid_input:
             DOC_LIST = sortDoc.score_search(INPUT_WORDS, tdm, INDEX, K)
+            path = 'LanguageAnalysis/Reuters/'
+            for i in DOC_LIST:
+                print('\033[0;36m-----'+str(int(i))+'.html'+'-----\033[0m')
+                fname = path + str(int(i))+'.html'
+                f = open(fname, 'r')
+                lineList = f.read().split('\n')
+                for i in range(0, len(lineList)):
+                    lineList[i] = lineList[i].rstrip('\n')
+                    wordList = lineList[i].split(' ')
+                    wordList = [w for w in wordList if w != '']
+                    intersection = [v for v in wordList if v in INPUT_WORDS]
+                    if len(intersection) > 0:
+                        start = 0
+                        current = 0
+                        end = 0
+                        for j in range(len(wordList)):
+                            if wordList[j] in INPUT_WORDS:
+                                current = j
+                                if j > end:
+                                    start = max(j-5, 0)
+                                    end = min(j + 5, len(wordList))
+                                    print('>> ', end='')
+                                    for k in range(start, end):
+                                        if wordList[k] in INPUT_WORDS:
+                                            print('\033[0;31m', end='')
+                                            print(wordList[k], end=' ')
+                                            print('\033[0m', end='')
+                                        else:
+                                            print(wordList[k], end=' ')
+                                    print('')
+            DOC_LIST = [str(int(x))+'.html' for x in DOC_LIST]
         else:
             DOC_LIST = []
     elif method == "EXIT":
