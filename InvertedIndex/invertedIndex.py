@@ -35,6 +35,7 @@ class InvertedIndex:
         _temp_data = pickle.load(_file)
         _temp_inverted_index = _temp_data["index_data"]
         self.__doc_count = _temp_data["doc_count"]
+        self.__doc_id_list = _temp_data["doc_id_list"]
         _progress_bar = tqdm.tqdm(total=len(_temp_inverted_index))
         self.__inverted_index = dict()
         for _temp_index_item in _temp_inverted_index:
@@ -103,7 +104,7 @@ class InvertedIndex:
         print("")
         print("Storing finished")
         _file = open(self.__store_path + "\\" + self.__store_file_name, 'wb')
-        pickle.dump({"doc_count": self.__doc_count, "index_data": _temp_inverted_index}, _file)
+        pickle.dump({"doc_id_list": self.__doc_id_list, "doc_count": self.__doc_count, "index_data": _temp_inverted_index}, _file)
         _file.close()
 
     def get_index(self):
@@ -114,6 +115,9 @@ class InvertedIndex:
 
     def get_doc_count(self):
         return self.__doc_count
+
+    def get_doc_id_list(self):
+        return self.__doc_id_list
 
     def __create_index(self):
         logging.basicConfig(
@@ -129,7 +133,7 @@ class InvertedIndex:
         _doc_count = self.__doc_count
         _get_doc_id = lambda _doc_file_name: int(_doc_file_name.split(".")[0])
         _progress_bar = tqdm.tqdm(total=_doc_count)
-
+        self.__doc_id_list = list()
         for _doc_file_name in _doc_file_names:
             logging.debug("start process " + _doc_file_name)
             _doc_id = _get_doc_id(_doc_file_name)

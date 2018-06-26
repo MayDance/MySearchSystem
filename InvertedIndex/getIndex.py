@@ -3,17 +3,38 @@ import tools
 from . import invertedIndex
 
 # get_index()
-def get_index():
+_idx = None
+
+
+def __get_index_object():
     idx = invertedIndex.InvertedIndex()
-    index = idx.get_index()
-    return index
+    return idx
+
+
+def get_index():
+    global _idx
+    if _idx is None:
+        _idx = __get_index_object()
+
+    return _idx.get_index()
+
 
 def get_item_list():
-    idx = invertedIndex.InvertedIndex()
-    item_list = idx.get_item_list()
-    return item_list
+    global _idx
+    if _idx is None:
+        _idx = __get_index_object()
+    return _idx.get_item_list()
+
 
 def get_doc_count():
-    idx = invertedIndex.InvertedIndex()
-    doc_count = idx.get_doc_count()
-    return doc_count
+    global _idx
+    if _idx is None:
+        _idx = __get_index_object()
+    return _idx.get_doc_count()
+
+
+def get_doc_id_list():
+    global _idx
+    if _idx is None:
+        _idx = __get_index_object()
+    return _idx.get_doc_id_list()
