@@ -1,4 +1,3 @@
-import nltk
 import json
 import os
 from nltk.stem import WordNetLemmatizer
@@ -16,21 +15,25 @@ class LangAnalysis:
         _doc_count = len(_doc_file_names)
         return _doc_count
 
+    def get_doc_id_list(self):
+        _doc_id_list = list()
+        _get_doc_id = lambda _doc_file_name: int(_doc_file_name.split(".")[0])
+        _doc_file_names = os.listdir(self.__doc_path)
+        for _doc_file_name in _doc_file_names:
+            _doc_id_list.append(_get_doc_id(_doc_file_name))
+        _doc_id_list.sort()
+        #print(_doc_id_list)
+        return _doc_id_list
+
     def get_file_list(self):
         _get_doc_id = lambda _doc_file_name: int(_doc_file_name.split(".")[0])
         _doc_file_names = os.listdir(self.__doc_path)
-        _doc_count = len(_doc_file_names)
         _doc_file_names.sort(key=_get_doc_id)
         return _doc_file_names
 
-    def get_item_list(self, _doc_file_name):
-        file = open(self.__doc_path + "\\" + _doc_file_name, 'r')
-        content = file.read()
-        words = lemmatize_sentence(content, False)
-        file.close()
-        return words
-
     def test_analysis(self, _doc_file_name):
+        lemmatizer = WordNetLemmatizer()
+
         if not os.path.exists(self.__ir_path):
             os.makedirs(self.__ir_path)
         file = open(self.__doc_path + "\\" + _doc_file_name, 'r')
@@ -40,37 +43,30 @@ class LangAnalysis:
         tokens_file.write(json.dumps(tokens))
 
         tokens_stemming = []
-        lemmatizer = WordNetLemmatizer()
         for word, pos in pos_tag(tokens):
-            wordnet_pos = get_wordnet_pos(pos) or wordnet.NOUN
+            wordnet_pos = __get_wordnet_pos(pos) or wordnet.NOUN
             tokens_stemming.append(lemmatizer.lemmatize(word, pos=wordnet_pos))
         stemming_file = open(self.__ir_path + "\\" + "stemming.txt", "w")
         stemming_file.write(json.dumps(tokens_stemming))
 
-
-def get_wordnet_pos(treebank_tag):
-    if treebank_tag.startswith('J'):
-        return wordnet.ADJ
-    elif treebank_tag.startswith('V'):
-        return wordnet.VERB
-    elif treebank_tag.startswith('N'):
-        return wordnet.NOUN
-    elif treebank_tag.startswith('R'):
-        return wordnet.ADV
-    else:
-        return None
+    def get_item_list(self, _doc_file_name):
+        file = open(self.__doc_path + "\\" + _doc_file_name, 'r')
+        content = file.read()
+        words = normalize(content, False)
+        file.close()
+        return words
 
 
-deleteSignal = [',', '.', ';', '&', ':', '>', "'", '`', '(', ')', '+', '!', '*', '"', '?']
-deleteSignalForInput = [',', '.', ';', '&', ':', '>', "'", '`', '+', '!', '*', '"', '?']
+__deleteSignal = [',', '.', ';', '&', ':', '>', "'", '`', '(', ')', '+', '!', '*', '"', '?']
+__deleteSignalForInput = [',', '.', ';', '&', ':', '>', "'", '`', '+', '!', '*', '"', '?']
 
 
-def lemmatize_sentence(sentence, forinput):
+def normalize(sentence, forinput):
     res = []
     result = []
     lemmatizer = WordNetLemmatizer()
     for word, pos in pos_tag(word_tokenize(sentence)):
-        wordnet_pos = get_wordnet_pos(pos) or wordnet.NOUN
+        wordnet_pos = __get_wordnet_pos(pos) or wordnet.NOUN
         res.append(lemmatizer.lemmatize(word, pos=wordnet_pos))
 
     for word in res:
@@ -80,10 +76,10 @@ def lemmatize_sentence(sentence, forinput):
 
         # 去除标点符号
         if not forinput:
-            for c in deleteSignal:
+            for c in __deleteSignal:
                 word = word.replace(c, '')
         else:
-            for c in deleteSignalForInput:
+            for c in __deleteSignalForInput:
                 word = word.replace(c, '')
 
         # 排除空的字符串
@@ -94,22 +90,35 @@ def lemmatize_sentence(sentence, forinput):
         if word.find('/') > 0:
             rs = word.split('/')
             for w in rs:
-                w = getWord(w)
+                w = __getWord(w)
                 result.append(w)
         else:
-            word = getWord(word)
+            word = __getWord(word)
             result.append(word)
 
     return result
 
 
-def getWord(word):
+def __getWord(word):
     if word.istitle():
         word = word.lower()
         word = WordNetLemmatizer().lemmatize(word, pos='n')
     else:
         word = WordNetLemmatizer().lemmatize(word, pos='n')
     return word
+
+
+def __get_wordnet_pos(treebank_tag):
+    if treebank_tag.startswith('J'):
+        return wordnet.ADJ
+    elif treebank_tag.startswith('V'):
+        return wordnet.VERB
+    elif treebank_tag.startswith('N'):
+        return wordnet.NOUN
+    elif treebank_tag.startswith('R'):
+        return wordnet.ADV
+    else:
+        return None
 
 
 if __name__ == "__main__":

@@ -1,6 +1,7 @@
 import os
 import tools
 import nltk
+from SpellCorrect import SpellCorrect
 from InvertedIndex import getIndex
 from LanguageAnalysis import languageAnalysis
 from Serching import searchWord
@@ -34,7 +35,6 @@ DTWEIGHT = tdm.get_tdwm()
 print(DTWEIGHT);
 print(DTWEIGHT.sum(axis=1))
 print("loading the wordnet...")
-languageAnalysis.lemmatize_sentence("a", False)
 
 LOOP = True
 print("=================Searching System=================")
@@ -48,8 +48,8 @@ while LOOP:
         if STATEMENT == "EXIT":
             break
 
-        print("stemming...")
-        INPUT_WORDS = languageAnalysis.lemmatize_sentence(STATEMENT, True)
+        print("Normalizing query statement...")
+        INPUT_WORDS = languageAnalysis.normalize(STATEMENT, True)
         print(INPUT_WORDS)
 
         DOC_LIST = BoolSearchDel.bool_search(INPUT_WORDS, INDEX)
@@ -60,10 +60,25 @@ while LOOP:
             break
         print("input the K:")
         K = input()
-        print("stemming...")
-        INPUT_WORDS = languageAnalysis.lemmatize_sentence(STATEMENT, True)
+        print("Normalizing query statement...")
+        INPUT_WORDS = languageAnalysis.normalize(STATEMENT, True)
         print(INPUT_WORDS)
-        DOC_LIST = sortDoc.score_search(INPUT_WORDS, tdm, INDEX, K)  
+        valid_input = True
+        for word in INPUT_WORDS:
+            if word in item_list:
+                continue
+            else:
+                corrected = SpellCorrect.correct_word(word, item_list)
+                if corrected != None:
+                    INPUT_WORDS[INPUT_WORDS.index(word)] = corrected
+                else:
+                    print("Nothing found. Please check if you spell correctly.")
+                    valid_input = False
+                    break
+        if valid_input:
+            DOC_LIST = sortDoc.score_search(INPUT_WORDS, tdm, INDEX, K)
+        else:
+            DOC_LIST = []
     elif method == "EXIT":
         break
     else:
