@@ -14,6 +14,7 @@ class InvertedIndex:
         self.__store_file_name = 'index.index'
         self.__analyzer = languageAnalysis.LangAnalysis()
         self.__doc_count = self.__analyzer.get_doc_count()
+        self.__doc_id_list = self.__analyzer.get_doc_id_list()
         if os.path.exists(self.__store_path):
             index_file_names = os.listdir(self.__store_path)
             if self.__store_file_name not in index_file_names:
@@ -36,6 +37,7 @@ class InvertedIndex:
         _temp_inverted_index = _temp_data["index_data"]
         self.__doc_count = _temp_data["doc_count"]
         self.__doc_id_list = _temp_data["doc_id_list"]
+        #print(self.__doc_id_list)
         _progress_bar = tqdm.tqdm(total=len(_temp_inverted_index))
         self.__inverted_index = dict()
         for _temp_index_item in _temp_inverted_index:
@@ -133,7 +135,6 @@ class InvertedIndex:
         _doc_count = self.__doc_count
         _get_doc_id = lambda _doc_file_name: int(_doc_file_name.split(".")[0])
         _progress_bar = tqdm.tqdm(total=_doc_count)
-        self.__doc_id_list = list()
         for _doc_file_name in _doc_file_names:
             logging.debug("start process " + _doc_file_name)
             _doc_id = _get_doc_id(_doc_file_name)
@@ -153,6 +154,7 @@ class InvertedIndex:
             logging.debug("end process " + _doc_file_name)
             _progress_bar.update(1)
         _progress_bar.close()
+
         print("")
         logging.debug("creating finished")
         print("creating finished")

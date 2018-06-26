@@ -7,3 +7,8 @@ __pycache__/
 .vscode
 
 index_files
+
+*.npy
+
+LanguageAnalysis/Reuters
+LanguageAnalysis/Intermediate
