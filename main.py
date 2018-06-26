@@ -4,7 +4,7 @@ import nltk
 from SpellCorrect import SpellCorrect
 from InvertedIndex import getIndex
 from LanguageAnalysis import languageAnalysis
-from Serching import searchWord
+from Searching import searchWord
 from BoolSearch import BoolSearchDel
 from scoreQuery import sortDoc
 from TermDocWeightMatrix import TermDocWeight

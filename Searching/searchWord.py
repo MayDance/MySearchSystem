@@ -1,7 +1,7 @@
 import queue
 import os
 import tools
-from Serching import operateDocList
+from Searching import operateDocList
 
 
 def search_single_word(index, word):

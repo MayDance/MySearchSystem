@@ -1,7 +1,7 @@
 import nltk
 import collections
-from Serching import operateDocList as listSort
-from Serching import searchWord as search
+from Searching import operateDocList as listSort
+from Searching import searchWord as search
 
 
 def infix_to_postfix(input_list):
