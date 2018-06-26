@@ -8,7 +8,13 @@ class TopK:
         self.docID = docID
         self.heap = np.array([])
         self.len = 0
-        self.build_heap()
+        self.heap = np.array([self.score, self.docID])
+        self.heap = np.transpose(self.heap)
+        self.len = len(self.heap)
+        # self.heap = np.sort(self.heap, axis=0)
+        # self.heap.sort(0)
+        self.heap = sorted(self.heap.tolist(), reverse=True)
+        # self.build_heap()
 
     def build_heap(self):
         self.heap = np.array([self.score, self.docID])
@@ -44,14 +50,20 @@ class TopK:
         self.heap[b][1] = t
 
     def get_topk(self):
-        doc = []
-        for i in range(min(self.k, self.len - 1)):
-            doc.append(self.heap[1][1])
-            self.swap(1, self.len - 1)
-            np.delete(self.heap, self.len - 1, 0)
-            self.len = self.len - 1
-            self.heapify(1)
-        return doc
+        # doc = []
+        # score = []
+        # for i in range(min(self.k, self.len - 1)):
+        #     doc.append(self.heap[1][1])
+        #     score.append(self.heap[1][0])
+        #     self.swap(1, self.len - 1)
+        #     np.delete(self.heap, self.len - 1, 0)
+        #     self.len = self.len - 1
+        #     self.heapify(1)
+        # return doc, score
+        doc = [self.heap[x][1] for x in range(0, min(self.k, self.len - 1))]
+        score = [self.heap[x][0] for x in range(0, min(self.k, self.len - 1))]
+        print(doc, score)
+        return doc, score
 
 
 if __name__ == '__main__':

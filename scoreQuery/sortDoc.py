@@ -42,14 +42,14 @@ def score_search(words, tdm, index, K):
     #print(doclist1.shape)
     t = topK.TopK(int(K), score, doclist)
     # print(t.heap)
-    doc = t.get_topk()
+    doc, score = t.get_topk()
     #print(doc)
-    return doc
+    return doc, score
  
 def get_query_vector(words):
     item_list = getIndex.get_item_list()
     v = np.zeros(len(item_list))
     for term in words:
-        v[item_list.index(term)]=1;
+        v[item_list.index(term)]=1
     return v 
 

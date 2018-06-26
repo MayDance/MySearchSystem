@@ -1,5 +1,6 @@
 import os
 import tools
+import html
 import nltk
 from SpellCorrect import SpellCorrect
 from InvertedIndex import getIndex
@@ -8,6 +9,29 @@ from Serching import searchWord
 from BoolSearch import BoolSearchDel
 from scoreQuery import sortDoc
 from TermDocWeightMatrix import TermDocWeight
+
+
+# 该函数是为了输出搜索结果写的，可注释
+def getWord(word):
+    tokens = nltk.word_tokenize(word)
+    deleteSignal = [',', '.', ';', '&', ':', '>', "'", '`', '(', ')', '+', '!', '*', '"', '?']
+    for i in deleteSignal:
+        word = str(word).replace(i, '').lower()
+    for word, pos in nltk.pos_tag(tokens):
+        if pos.startswith('J'):
+            wordnet_pos = nltk.corpus.wordnet.ADJ
+        elif pos.startswith('V'):
+            wordnet_pos = nltk.corpus.wordnet.VERB
+        elif pos.startswith('N'):
+            wordnet_pos = nltk.corpus.wordnet.NOUN
+        elif pos.startswith('R'):
+            wordnet_pos = nltk.corpus.wordnet.ADV
+        else:
+            wordnet_pos = nltk.corpus.wordnet.NOUN
+        word = nltk.WordNetLemmatizer().lemmatize(word, wordnet_pos)
+        return word
+    return word
+
 
 print("The first time to load this System?[Y]/[N]")
 choose = input()
@@ -27,9 +51,9 @@ if choose == "Y":
     tdm.build_tdwm()
 print("getting vector space")
 tdm.load_tdwm()
-#print(item_list)
-#print(doc_num)
-#print(doc_list)
+# print(item_list)
+# print(doc_num)
+# print(doc_list)
 
 DTWEIGHT = tdm.get_tdwm()
 print(type(DTWEIGHT));
@@ -46,7 +70,6 @@ while LOOP:
         STATEMENT = input()
         if STATEMENT == "EXIT":
             break
-
 
         print("Normalizing query statement...")
         INPUT_WORDS = languageAnalysis.normalize(STATEMENT, True)
@@ -77,38 +100,43 @@ while LOOP:
                     valid_input = False
                     break
         if valid_input:
-            DOC_LIST = sortDoc.score_search(INPUT_WORDS, tdm, INDEX, K)
+            DOC_LIST, score = sortDoc.score_search(INPUT_WORDS, tdm, INDEX, K)
+            # 以下是为了输出搜索结果写的，可注释
             path = 'LanguageAnalysis/Reuters/'
-            for i in DOC_LIST:
-                print('\033[0;36m-----'+str(int(i))+'.html'+'-----\033[0m')
-                fname = path + str(int(i))+'.html'
+            INPUT_WORDS = [v.lower() for v in INPUT_WORDS]
+            for i in range(len(DOC_LIST)):
+                print(
+                    '\033[0;36m-----' + str(int(DOC_LIST[i])) + '.html: (score ' + str(score[i]) + ')' + '-----\033[0m')
+                fname = path + str(int(DOC_LIST[i])) + '.html'
                 f = open(fname, 'r')
                 lineList = f.read().split('\n')
+                f.close()
                 for i in range(0, len(lineList)):
                     lineList[i] = lineList[i].rstrip('\n')
                     wordList = lineList[i].split(' ')
                     wordList = [w for w in wordList if w != '']
-                    intersection = [v for v in wordList if v in INPUT_WORDS]
+                    intersection = [v for v in wordList if getWord(v) in INPUT_WORDS]
                     if len(intersection) > 0:
                         start = 0
                         current = 0
                         end = 0
                         for j in range(len(wordList)):
-                            if wordList[j] in INPUT_WORDS:
+                            if getWord(wordList[j]) in INPUT_WORDS:
                                 current = j
                                 if j > end:
-                                    start = max(j-5, 0)
+                                    start = max(j - 5, 0)
                                     end = min(j + 5, len(wordList))
                                     print('>> ', end='')
                                     for k in range(start, end):
-                                        if wordList[k] in INPUT_WORDS:
+                                        if getWord(wordList[k]) in INPUT_WORDS:
                                             print('\033[0;31m', end='')
-                                            print(wordList[k], end=' ')
+                                            print(html.unescape(wordList[k]), end=' ')
                                             print('\033[0m', end='')
                                         else:
-                                            print(wordList[k], end=' ')
+                                            print(html.unescape(wordList[k]), end=' ')
                                     print('')
-            DOC_LIST = [str(int(x))+'.html' for x in DOC_LIST]
+            # 以上是为了输出搜索结果写的，可注释
+            DOC_LIST = [str(int(x)) + '.html' for x in DOC_LIST]
         else:
             DOC_LIST = []
     elif method == "EXIT":
