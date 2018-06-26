@@ -18,21 +18,29 @@ def score_search(words, tdm, index, K):
     vd = tdm.get_vd(doclist)
     q = get_query_vector(words)
     kq = math.sqrt(len(words))
-    vd = np.array(vd)
+    #vd = np.array(vd)
+    #print(vd)
     q = np.array(q)
     #print(vd.shape)
     #print(q.shape)
-    vd1 = np.square(vd) #全部平方
-    vd2 = np.sum(vd1, axis=1) #平方和
-    vd3 = np.sqrt(vd2) #开根号 根号Vd的平方和
-    vdq = np.dot(vd, q) #点乘
-    score = vdq/vd3/kq #得到score
+    score=[]
+    for i in doclist:
+        tmp = vd[i]
+        #print(tmp)
+        tmpcol = tmp[0]
+        tmpv = tmp[1]
+        tmpv = np.array(tmpv)
+        tmpv1 = np.square(tmpv)
+        tmpdoc = math.sqrt(np.sum(tmpv1))
+        dotres = 0
+        for j in range(0, len(tmpcol)):
+            dotres += q[tmpcol[j]]*tmpv[j]
+        score.append(dotres/tmpdoc/kq)
     #print(score)
     #print(score.shape)
     #doclist1=np.array(doclist)
     #print(doclist1.shape)
-    score1=score.tolist()
-    t = topK.TopK(int(K), score1, doclist)
+    t = topK.TopK(int(K), score, doclist)
     # print(t.heap)
     doc = t.get_topk()
     #print(doc)

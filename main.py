@@ -32,8 +32,7 @@ tdm.load_tdwm()
 #print(doc_list)
 
 DTWEIGHT = tdm.get_tdwm()
-print(DTWEIGHT);
-print(DTWEIGHT.sum(axis=1))
+print(type(DTWEIGHT));
 print("loading the wordnet...")
 
 LOOP = True
