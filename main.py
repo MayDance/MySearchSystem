@@ -13,10 +13,10 @@ from TermDocWeightMatrix import TermDocWeight
 
 # 该函数是为了输出搜索结果写的，可注释
 def getWord(word):
-    tokens = nltk.word_tokenize(word)
     deleteSignal = [',', '.', ';', '&', ':', '>', "'", '`', '(', ')', '+', '!', '*', '"', '?']
     for i in deleteSignal:
-        word = str(word).replace(i, '').lower()
+        word = word.replace(i, '').lower()
+    tokens = nltk.word_tokenize(word)
     for word, pos in nltk.pos_tag(tokens):
         if pos.startswith('J'):
             wordnet_pos = nltk.corpus.wordnet.ADJ
@@ -142,7 +142,7 @@ while LOOP:
     elif method == "EXIT":
         break
     else:
-        DOC_LIST = [];
+        DOC_LIST = []
     print(len(DOC_LIST), "DOCs :")
     print(DOC_LIST)
 
