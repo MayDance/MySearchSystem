@@ -22,7 +22,6 @@ class LangAnalysis:
         for _doc_file_name in _doc_file_names:
             _doc_id_list.append(_get_doc_id(_doc_file_name))
         _doc_id_list.sort()
-        #print(_doc_id_list)
         return _doc_id_list
 
     def get_file_list(self):
@@ -30,24 +29,6 @@ class LangAnalysis:
         _doc_file_names = os.listdir(self.__doc_path)
         _doc_file_names.sort(key=_get_doc_id)
         return _doc_file_names
-
-    def test_analysis(self, _doc_file_name):
-        lemmatizer = WordNetLemmatizer()
-
-        if not os.path.exists(self.__ir_path):
-            os.makedirs(self.__ir_path)
-        file = open(self.__doc_path + "\\" + _doc_file_name, 'r')
-        content = file.read()
-        tokens = word_tokenize(content)
-        tokens_file = open(self.__ir_path + "\\" + "tokens.txt", 'w')
-        tokens_file.write(json.dumps(tokens))
-
-        tokens_stemming = []
-        for word, pos in pos_tag(tokens):
-            wordnet_pos = __get_wordnet_pos(pos) or wordnet.NOUN
-            tokens_stemming.append(lemmatizer.lemmatize(word, pos=wordnet_pos))
-        stemming_file = open(self.__ir_path + "\\" + "stemming.txt", "w")
-        stemming_file.write(json.dumps(tokens_stemming))
 
     def get_item_list(self, _doc_file_name):
         file = open(self.__doc_path + "\\" + _doc_file_name, 'r')
@@ -63,12 +44,35 @@ __deleteSignalForInput = [',', '.', ';', '&', ':', '>', "'", '`', '+', '!', '*',
 
 def normalize(sentence, forinput):
     res = []
-    result = []
     lemmatizer = WordNetLemmatizer()
     for word, pos in pos_tag(word_tokenize(sentence)):
         wordnet_pos = __get_wordnet_pos(pos) or wordnet.NOUN
         res.append(lemmatizer.lemmatize(word, pos=wordnet_pos))
 
+    result = __filter(res, forinput)
+
+    return result
+
+
+def __get_file_list():
+    _get_doc_id = lambda _doc_file_name: int(_doc_file_name.split(".")[0])
+    _doc_file_names = os.listdir(os.getcwd() + "\\Reuters")
+    _doc_file_names.sort(key=_get_doc_id)
+    return _doc_file_names
+
+
+
+def __getWord(word):
+    if word.istitle():
+        word = word.lower()
+        word = WordNetLemmatizer().lemmatize(word, pos='n')
+    else:
+        word = WordNetLemmatizer().lemmatize(word, pos='n')
+    return word
+
+
+def __filter(res, forinput):
+    result = []
     for word in res:
         # 如果是 's什么的，直接排除
         if word[0] is '\'':
@@ -95,17 +99,7 @@ def normalize(sentence, forinput):
         else:
             word = __getWord(word)
             result.append(word)
-
     return result
-
-
-def __getWord(word):
-    if word.istitle():
-        word = word.lower()
-        word = WordNetLemmatizer().lemmatize(word, pos='n')
-    else:
-        word = WordNetLemmatizer().lemmatize(word, pos='n')
-    return word
 
 
 def __get_wordnet_pos(treebank_tag):
@@ -121,8 +115,38 @@ def __get_wordnet_pos(treebank_tag):
         return None
 
 
+def __test_analysis(langAnalysis, _doc_file_name):
+    lemmatizer = WordNetLemmatizer()
+    _get_doc_id = lambda _doc_file_name: int(_doc_file_name.split(".")[0])
+
+    file = open(os.getcwd() + "\\Reuters" + "\\" + _doc_file_name, 'r')
+    content = file.read()
+    tokens = word_tokenize(content)
+    tokens_file = open(os.getcwd() + "\\Intermediate\\Tokenize\\" + str(_get_doc_id(_doc_file_name)) + ".t", 'w')
+    tokens_file.write(json.dumps(tokens))
+
+    tokens_stemming = []
+    for word, pos in pos_tag(tokens):
+        wordnet_pos = __get_wordnet_pos(pos) or wordnet.NOUN
+        tokens_stemming.append(lemmatizer.lemmatize(word, pos=wordnet_pos))
+    stemming_file = open(os.getcwd() + "\\Intermediate\\Stemming\\" + str(_get_doc_id(_doc_file_name)) + ".s", "w")
+    stemming_file.write(json.dumps(tokens_stemming))
+
+    filtered = __filter(tokens_stemming, False)
+    filtered_file = open(os.getcwd() + "\\Intermediate\\Filter\\" + str(_get_doc_id(_doc_file_name)) + ".f", "w")
+    filtered_file.write(json.dumps(filtered))
+
+
 if __name__ == "__main__":
     langAnalysis = LangAnalysis()
-    file_names = langAnalysis.get_file_list()
-    file_name = file_names[0]
-    langAnalysis.test_analysis(file_name)
+    file_names = __get_file_list()
+    if not os.path.exists(os.getcwd() + "\\Intermediate"):
+        os.makedirs(os.getcwd() + "\\Intermediate")
+    if not os.path.exists(os.getcwd() + "\\Intermediate\\Tokenize"):
+        os.makedirs(os.getcwd() + "\\Intermediate\\Tokenize")
+    if not os.path.exists(os.getcwd() + "\\Intermediate\\Stemming"):
+        os.makedirs(os.getcwd() + "\\Intermediate\\Stemming")
+    if not os.path.exists(os.getcwd() + "\\Intermediate\\Filter"):
+        os.makedirs(os.getcwd() + "\\Intermediate\\Filter")
+    for file_name in file_names:
+        __test_analysis(langAnalysis, file_name)

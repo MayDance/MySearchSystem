@@ -2,13 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="649f7ef5-003e-4538-a9ba-68d968e9bdaa" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BoolSearch/BoolSearchDel.py" beforeDir="false" afterPath="$PROJECT_DIR$/BoolSearch/BoolSearchDel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SpellCorrect/SpellCorrect.py" beforeDir="false" afterPath="$PROJECT_DIR$/SpellCorrect/SpellCorrect.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TermDocWeightMatrix/TermDocWeight.py" beforeDir="false" afterPath="$PROJECT_DIR$/TermDocWeightMatrix/TermDocWeight.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scoreQuery/sortDoc.py" beforeDir="false" afterPath="$PROJECT_DIR$/scoreQuery/sortDoc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/topK/topK.py" beforeDir="false" afterPath="$PROJECT_DIR$/topK/topK.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LanguageAnalysis/languageAnalysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/LanguageAnalysis/languageAnalysis.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -28,10 +23,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
+            <state relative-caret-position="-259">
               <caret line="60" column="19" selection-start-line="60" selection-start-column="19" selection-end-line="60" selection-end-column="19" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
@@ -40,10 +35,30 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="sortDoc.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/scoreQuery/sortDoc.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <folding>
+                <element signature="e#0#34#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="languageAnalysis.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LanguageAnalysis/languageAnalysis.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="321">
+              <caret line="148" column="60" lean-forward="true" selection-start-line="148" selection-start-column="60" selection-end-line="148" selection-end-column="60" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="BoolSearchDel.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/BoolSearch/BoolSearchDel.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-297">
+            <state relative-caret-position="297">
               <caret line="14" column="17" selection-start-line="14" selection-start-column="17" selection-end-line="14" selection-end-column="17" />
             </state>
           </provider>
@@ -61,10 +76,19 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="invertedIndex.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/InvertedIndex/invertedIndex.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="189">
+              <caret line="13" column="45" selection-start-line="13" selection-start-column="45" selection-end-line="13" selection-end-column="45" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="searchWord.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Searching/searchWord.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="27">
+            <state relative-caret-position="189">
               <caret line="10" column="21" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
@@ -76,8 +100,8 @@
       <file leaf-file-name="SpellCorrect.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SpellCorrect/SpellCorrect.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="6" column="92" selection-start-line="6" selection-start-column="92" selection-end-line="6" selection-end-column="92" />
+            <state relative-caret-position="378">
+              <caret line="14" column="81" lean-forward="true" selection-start-line="14" selection-start-column="81" selection-end-line="14" selection-end-column="81" />
             </state>
           </provider>
         </entry>
@@ -117,15 +141,15 @@
         <option value="$PROJECT_DIR$/LanguageAnalysis/__init__.py" />
         <option value="$PROJECT_DIR$/InvertedIndex/invertedIndex.py" />
         <option value="$PROJECT_DIR$/InvertedIndex/getIndex.py" />
-        <option value="$PROJECT_DIR$/LanguageAnalysis/languageAnalysis.py" />
         <option value="$PROJECT_DIR$/SpellCorrect/SpellCorrect.py" />
         <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/LanguageAnalysis/languageAnalysis.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="343" />
-    <option name="y" value="21" />
+    <option name="x" value="64" />
+    <option name="y" value="15" />
     <option name="width" value="979" />
     <option name="height" value="690" />
   </component>
@@ -159,6 +183,11 @@
               <item name="SearchSystem" type="b2602c69:ProjectViewProjectNode" />
               <item name="SearchSystem" type="462c0819:PsiDirectoryNode" />
               <item name="LanguageAnalysis" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SearchSystem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SearchSystem" type="462c0819:PsiDirectoryNode" />
+              <item name="scoreQuery" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="SearchSystem" type="b2602c69:ProjectViewProjectNode" />
@@ -206,6 +235,24 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/SpellCorrect/SpellCorrect.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="languageAnalysis" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="SearchSystem" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/LanguageAnalysis" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/LanguageAnalysis/languageAnalysis.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -332,10 +379,12 @@
       <item itemvalue="Python.main" />
       <item itemvalue="Python.stemming" />
       <item itemvalue="Python.SpellCorrect" />
+      <item itemvalue="Python.languageAnalysis" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.languageAnalysis" />
         <item itemvalue="Python.SpellCorrect" />
         <item itemvalue="Python.stemming" />
       </list>
@@ -356,14 +405,13 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24963397" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24963397" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50073206" side_tool="true" weight="0.32961783" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Python Console" order="7" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49926794" visible="true" weight="0.32961783" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49926794" weight="0.21496816" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32961783" />
       <window_info id="Favorites" order="2" side_tool="true" />
@@ -381,13 +429,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/InvertedIndex/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="27">
-          <caret line="1" selection-start-line="1" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/LanguageAnalysis/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="27">
@@ -574,8 +615,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/LanguageAnalysis/Intermediate/withPos.txt" />
-    <entry file="file://$PROJECT_DIR$/LanguageAnalysis/Intermediate/tokens.txt" />
-    <entry file="file://$PROJECT_DIR$/LanguageAnalysis/Intermediate/stemming.txt" />
     <entry file="file://$PROJECT_DIR$/InvertedIndex/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="27">
@@ -605,20 +644,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LanguageAnalysis/languageAnalysis.py">
+    <entry file="file://$PROJECT_DIR$/Searching/searchWord.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="27">
-          <caret line="52" selection-start-line="52" selection-end-line="52" />
+        <state relative-caret-position="189">
+          <caret line="10" column="21" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/InvertedIndex/invertedIndex.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="27">
-          <caret line="13" column="45" selection-start-line="13" selection-start-column="45" selection-end-line="13" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/LanguageAnalysis/Intermediate/stemming.txt" />
+    <entry file="file://$PROJECT_DIR$/LanguageAnalysis/Intermediate/tokens.txt" />
     <entry file="file://$PROJECT_DIR$/InvertedIndex/getIndex.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="837">
@@ -629,36 +666,49 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Searching/searchWord.py">
+    <entry file="file://$PROJECT_DIR$/InvertedIndex/invertedIndex.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="27">
-          <caret line="10" column="21" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SpellCorrect/SpellCorrect.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="6" column="92" selection-start-line="6" selection-start-column="92" selection-end-line="6" selection-end-column="92" />
+        <state relative-caret-position="189">
+          <caret line="13" column="45" selection-start-line="13" selection-start-column="45" selection-end-line="13" selection-end-column="45" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/BoolSearch/BoolSearchDel.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-297">
+        <state relative-caret-position="297">
           <caret line="14" column="17" selection-start-line="14" selection-start-column="17" selection-end-line="14" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SpellCorrect/SpellCorrect.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="14" column="81" lean-forward="true" selection-start-line="14" selection-start-column="81" selection-end-line="14" selection-end-column="81" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LanguageAnalysis/languageAnalysis.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="321">
+          <caret line="148" column="60" lean-forward="true" selection-start-line="148" selection-start-column="60" selection-end-line="148" selection-end-column="60" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
+        <state relative-caret-position="-259">
           <caret line="60" column="19" selection-start-line="60" selection-start-column="19" selection-end-line="60" selection-end-column="19" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scoreQuery/sortDoc.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#34#0" expanded="true" />
           </folding>
         </state>
       </provider>
