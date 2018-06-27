@@ -8,7 +8,7 @@ from LanguageAnalysis import languageAnalysis
 
 
 class InvertedIndex:
-    def __init__(self, _store_path="\\index_files"):
+    def __init__(self, _store_path="/index_files"):
         self.__inverted_index = dict()
         self.__store_path = os.getcwd() + _store_path
         self.__store_file_name = 'index.index'
@@ -33,7 +33,7 @@ class InvertedIndex:
         # file.close()
         # self.__another_store_index()
         print("start to load index", flush=True)
-        _file = open(self.__store_path + "\\" + self.__store_file_name, 'rb')
+        _file = open(self.__store_path + "/" + self.__store_file_name, 'rb')
         _temp_data = pickle.load(_file)
         _temp_inverted_index = _temp_data["index_data"]
         self.__doc_count = _temp_data["doc_count"]
@@ -106,7 +106,7 @@ class InvertedIndex:
         _progress_bar.close()
         print("")
         print("Storing finished")
-        _file = open(self.__store_path + "\\" + self.__store_file_name, 'wb')
+        _file = open(self.__store_path + "/" + self.__store_file_name, 'wb')
         pickle.dump({"doc_id_list": self.__doc_id_list, "doc_count": self.__doc_count, "index_data": _temp_inverted_index}, _file)
         _file.close()
 
@@ -135,8 +135,8 @@ class InvertedIndex:
     def __create_index(self):
         logging.basicConfig(
             level=logging.DEBUG,
-            filename=self.__store_path + '\\index_creating.log',
-            filemode="w",
+            stream=open(self.__store_path + '/index_creating.log','a',encoding='utf-8'),
+            filemode="a",
             format='%(asctime)s - %(pathname)s[line:%(lineno)d] - %(levelname)s: %(message)s'
         )
         logging.debug("start to create index")

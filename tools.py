@@ -2,9 +2,9 @@ import json
 import os
 
 project_path = os.getcwd()
-project_path = project_path.replace('/', "\\")
-project_path += "\\"
-reuters_path = project_path + "LanguageAnalysis\\Reuters"
+# project_path = project_path.replace('/', "\\")
+project_path += "/"
+reuters_path = project_path + "LanguageAnalysis/Reuters"
 print("projectpath:", project_path)
 print("Reuters path", reuters_path)
 

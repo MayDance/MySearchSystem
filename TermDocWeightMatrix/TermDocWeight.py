@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 import math
+import pickle as pkl
 
 
 class TermDocWeight:
@@ -34,15 +35,17 @@ class TermDocWeight:
                     col.append(j)
                     data.append(self.tdwm[i][j])
             self.tdwmdic[self.docid_list[i]] = [col, data]
-        f = open('tdwm.txt','w')  
-        f.write(str(self.tdwmdic))  
-        f.close()  
+        f = open('tdwm','wb')
+        # f.write(self.tdwmdic)
+        # f.close()
+        pkl.dump(self.tdwmdic, f)
     
     def load_tdwm(self) :
-        f = open('tdwm.txt','r')  
-        a = f.read()  
-        self.tdwmdic = eval(a)  
-        f.close() 
+        f = open('tdwm','rb')
+        # a = f.read()
+        # self.tdwmdic = eval(a)
+        # f.close()
+        self.tdwmdic = pkl.load(f)
         
     def get_tdwm(self) :
         return self.tdwmdic

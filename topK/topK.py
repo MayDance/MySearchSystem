@@ -60,8 +60,8 @@ class TopK:
         #     self.len = self.len - 1
         #     self.heapify(1)
         # return doc, score
-        doc = [self.heap[x][1] for x in range(0, min(self.k, self.len - 1))]
-        score = [self.heap[x][0] for x in range(0, min(self.k, self.len - 1))]
+        doc = [self.heap[x][1] for x in range(0, min(self.k, self.len))]
+        score = [self.heap[x][0] for x in range(0, min(self.k, self.len))]
         # print(doc, score)
         return doc, score
 

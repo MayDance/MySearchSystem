@@ -7,8 +7,8 @@ from nltk import word_tokenize, pos_tag
 
 class LangAnalysis:
     def __init__(self):
-        self.__doc_path = os.getcwd() + "\\LanguageAnalysis\\Reuters"
-        self.__ir_path = os.getcwd() + "\\LanguageAnalysis\\Intermediate"
+        self.__doc_path = os.getcwd() + "/LanguageAnalysis/Reuters"
+        self.__ir_path = os.getcwd() + "/LanguageAnalysis/Intermediate"
 
     def get_doc_count(self):
         _doc_file_names = os.listdir(self.__doc_path)
@@ -36,21 +36,21 @@ class LangAnalysis:
 
         if not os.path.exists(self.__ir_path):
             os.makedirs(self.__ir_path)
-        file = open(self.__doc_path + "\\" + _doc_file_name, 'r')
+        file = open(self.__doc_path + "/" + _doc_file_name, 'r')
         content = file.read()
         tokens = word_tokenize(content)
-        tokens_file = open(self.__ir_path + "\\" + "tokens.txt", 'w')
+        tokens_file = open(self.__ir_path + "/" + "tokens.txt", 'w')
         tokens_file.write(json.dumps(tokens))
 
         tokens_stemming = []
         for word, pos in pos_tag(tokens):
             wordnet_pos = __get_wordnet_pos(pos) or wordnet.NOUN
             tokens_stemming.append(lemmatizer.lemmatize(word, pos=wordnet_pos))
-        stemming_file = open(self.__ir_path + "\\" + "stemming.txt", "w")
+        stemming_file = open(self.__ir_path + "/" + "stemming.txt", "w")
         stemming_file.write(json.dumps(tokens_stemming))
 
     def get_item_list(self, _doc_file_name):
-        file = open(self.__doc_path + "\\" + _doc_file_name, 'r')
+        file = open(self.__doc_path + "/" + _doc_file_name, 'r')
         content = file.read()
         words = normalize(content, False)
         file.close()
