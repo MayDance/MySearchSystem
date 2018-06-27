@@ -1,42 +1,56 @@
 # 信息检索系统
 
-利用倒排索引和向量空间模型实现的信息检索系统.
+利用倒排索引和向量空间模型实现的信息检索系统。
 
-## 完成工作：
-- 带位置信息的倒排索引 OK
-- 向量空间模型
-- TOP K查询
-- BOOL查询 OK
-- 短语查询
-- 拼写矫正
-- 同义词查询
-- 拼写矫正（短语）
+## 完成工作以及分工：
+- 马哲：
+    - 拼写矫正
+- 袁德华：
+    - 带位置信息的倒排索引
+    - 索引压缩
+- 宋鼎：
+    - BOOL查询
+    - 短语查询
+- 姚婧、徐维亚：  
+    - 向量空间模型
+    - TOP K查询
 
 # 运行
 环境要求：python3 
+语料库需自行下载放置于`./LanguageAnalysis/Reuters`中，该文件夹中包含所有docID.html文件。
 
-在初次运行程序前请下载词干还原依赖的语料库
-
-在`SearchSystem/main.py`中已经注释掉下载语料库的命令
-```python
-nltk.download("wordnet")
-nltk.download("averaged_perceptron_tagger")
-nltk.download("punkt")
-nltk.download("maxnet_treebank_pos_tagger")
-```
-取消注释后运行一次即可，语料库下载完成即可正常运行
-
-windows下如果嫌弃语料库下载比较慢，可以直接将该目录下的`nltk_data`文件夹替换掉user下的`AppData/Roaming/nltk_data`文件夹，根目录的`nltk_data`文件夹是已经下载好的语料库
-
-语料库下载完成后请将相应的下载语注释掉。
-
-在`SearchSystem`目录下运行命令：
-```batch
-python main.py
-```
 > 注意：运行前请不要修改工程文件的名字和相对位置
 
-`SearchSystem`工程目录是pycharm的工程
+运行方式：
+```commandline
+python main.py
+```
+## 运行输入与输出
+- The first time to load this System?[Y]/[N]
+    - 第一次运行需要输入Y，构建向量空间
+    - 之后运行请输入N继续
+### 布尔查询、短语查询
+- input the search method(EXIT to quit):
+    - 输入：BOOL
+- input the query statement(EXIT to quit):
+    - 布尔输入样例（NOT AND OR需要大写）：NOT word1 AND word2 OR word3
+    - 短语查询直接输入需要查询短语
+- 输出
+    - 首先输出拼音矫正结果，再输出查询结果（文档数目+文档列表）
+### TOP-K 查询
+- input the search method(EXIT to quit):
+    - 输入：SCORE
+- input the query statement(EXIT to quit):
+    - 直接输入需要查询内容
+- input the K:
+    - 输入查询结果数量
+- 输出
+    - 拼音矫正结果
+    - 文档名+文档得分
+    - 文档内容中包含查询项的周围语句
+    - 总结：文档数目+文档列表
+
+    
 
 # 实现功能
 ## 词干还原
@@ -64,23 +78,19 @@ python main.py
 索引事先建立好储存在文件中，每次运行程序时将索引加载到内存中。
 
 ## 向量空间模型
-通过查询向量计算出文档的wf-idf评分进行排序。
+通过查询向量计算出文档的tf-idf评分进行排序。
 
-wf-idf计算方法：
+tf-idf计算方法：
 1. 首先对query中出现的单词对应的文档列表取并集。
 2. 随后对query中出现的单词对文档进行wf-idf计算并评分。
 3. 得到所有文档对该查询的评分后再对所有文档进行排序。
 
-wf-idf 和 tf-idf比较：
-1. 通过log计算削弱词项频率对评分的影响。
-2. 一篇文章中单词出现n次不代表其权重扩大n倍。
-
 ## TOP K 查询
 首先通过向量空间模型得到所有文档的评分。
 
-通过堆排序建好最小堆以后进行K次precDown操作。
+通过堆排序建好最大堆以后进行K次pop+precDown操作。
 
-堆最后的K个元素即为评分前K大的元素。
+将pop得到的K个元素返回。
 
 ## 短语查询
 利用带位置信息的倒排索引。
