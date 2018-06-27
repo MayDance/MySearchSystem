@@ -1,11 +1,13 @@
 import os
 import tools
 import html
+import operator
+import copy
 import nltk
 from SpellCorrect import SpellCorrect
 from InvertedIndex import getIndex
 from LanguageAnalysis import languageAnalysis
-from Serching import searchWord
+from Searching import searchWord
 from BoolSearch import BoolSearchDel
 from scoreQuery import sortDoc
 from TermDocWeightMatrix import TermDocWeight
@@ -73,10 +75,19 @@ while LOOP:
 
         print("Normalizing query statement...")
         INPUT_WORDS = languageAnalysis.normalize(STATEMENT, True)
-        print(INPUT_WORDS)
+        print(" ".join(INPUT_WORDS))
         POSTPHRASE = BoolSearchDel.infix_to_postfix(INPUT_WORDS)
-
-        DOC_LIST = BoolSearchDel.bool_search(POSTPHRASE, INDEX)
+        OLD_INPUT_WORDS = copy.deepcopy(POSTPHRASE)
+        corrected = SpellCorrect.correct_word(POSTPHRASE, item_list)
+        if corrected != None:
+            if not operator.eq(OLD_INPUT_WORDS, corrected):
+                print("Maybe you are searching for %s" % " ".join(list(map(" ".join, corrected))))
+                DOC_LIST = BoolSearchDel.bool_search(POSTPHRASE, INDEX)
+            else:
+                DOC_LIST = BoolSearchDel.bool_search(POSTPHRASE, INDEX)
+        else:
+            print("Nothing found. Please check if you spell correctly.")
+            DOC_LIST = []
     elif method == "SCORE":
         print("input the query statement(EXIT to quit):")
         STATEMENT = input()
@@ -86,58 +97,17 @@ while LOOP:
         K = input()
         print("Normalizing query statement...")
         INPUT_WORDS = languageAnalysis.normalize(STATEMENT, True)
-        print(INPUT_WORDS)
-        valid_input = True
-        for word in INPUT_WORDS:
-            if word in item_list:
-                continue
+        print(" ".join(INPUT_WORDS))
+        OLD_INPUT_WORDS = INPUT_WORDS.copy()
+        corrected = SpellCorrect.correct_word([INPUT_WORDS, ], item_list)
+        if corrected != None:
+            if OLD_INPUT_WORDS != corrected[0]:
+                print("Maybe you are searching for %s" % " ".join(INPUT_WORDS))
+                DOC_LIST = sortDoc.score_search(INPUT_WORDS, tdm, INDEX, K)
             else:
-                corrected = SpellCorrect.correct_word(word, item_list)
-                if corrected != None:
-                    INPUT_WORDS[INPUT_WORDS.index(word)] = corrected
-                else:
-                    print("Nothing found. Please check if you spell correctly.")
-                    valid_input = False
-                    break
-        if valid_input:
-            DOC_LIST, score = sortDoc.score_search(INPUT_WORDS, tdm, INDEX, K)
-            # 以下是为了输出搜索结果写的，可注释
-            path = 'LanguageAnalysis/Reuters/'
-            INPUT_WORDS = [v.lower() for v in INPUT_WORDS]
-            for i in range(len(DOC_LIST)):
-                print(
-                    '\033[0;36m-----' + str(int(DOC_LIST[i])) + '.html: (score ' + str(score[i]) + ')' + '-----\033[0m')
-                fname = path + str(int(DOC_LIST[i])) + '.html'
-                f = open(fname, 'r')
-                lineList = f.read().split('\n')
-                f.close()
-                for i in range(0, len(lineList)):
-                    lineList[i] = lineList[i].rstrip('\n')
-                    wordList = lineList[i].split(' ')
-                    wordList = [w for w in wordList if w != '']
-                    intersection = [v for v in wordList if getWord(v) in INPUT_WORDS]
-                    if len(intersection) > 0:
-                        start = 0
-                        current = 0
-                        end = 0
-                        for j in range(len(wordList)):
-                            if getWord(wordList[j]) in INPUT_WORDS:
-                                current = j
-                                if j > end:
-                                    start = max(j - 5, 0)
-                                    end = min(j + 5, len(wordList))
-                                    print('>> ', end='')
-                                    for k in range(start, end):
-                                        if getWord(wordList[k]) in INPUT_WORDS:
-                                            print('\033[0;31m', end='')
-                                            print(html.unescape(wordList[k]), end=' ')
-                                            print('\033[0m', end='')
-                                        else:
-                                            print(html.unescape(wordList[k]), end=' ')
-                                    print('')
-            # 以上是为了输出搜索结果写的，可注释
-            DOC_LIST = [str(int(x)) + '.html' for x in DOC_LIST]
+                DOC_LIST = sortDoc.score_search(INPUT_WORDS, tdm, INDEX, K)
         else:
+            print("Nothing found. Please check if you spell correctly.")
             DOC_LIST = []
     elif method == "EXIT":
         break
