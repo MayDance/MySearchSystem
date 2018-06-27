@@ -1,10 +1,13 @@
 import numpy as np
-
+from LanguageAnalysis import languageAnalysis
+from nltk import word_tokenize
 
 def correct_word(word_list, item_list):
-    for words in word_list:
-        for word in words:
-            if (word not in item_list) or (word != "AND") or (word != "OR") or (word != "NOT"):
+    for i, words in enumerate(word_list):
+        tmp = words[0].split(" ")
+        res = ""
+        for j, word in enumerate(tmp):
+            if word not in item_list:
                 word_pairs = []
                 for item in item_list:
                     word_pairs.append([word, item])
@@ -12,7 +15,14 @@ def correct_word(word_list, item_list):
                 if min(dis) > 2:
                     return None
                 else:
-                    words[words.index(word)] = word_pairs[dis.index(min(dis))][1]
+                    word = word_pairs[dis.index(min(dis))][1]
+                    # words[words.index(word)] = word_pairs[dis.index(min(dis))][1]
+            if j != 0:
+                res += " " + word
+            else:
+                res += word
+        word_list[i] = list()
+        word_list[i].append(res)
     return word_list
 
 

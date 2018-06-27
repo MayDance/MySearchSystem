@@ -78,10 +78,7 @@ while LOOP:
         print(" ".join(INPUT_WORDS))
         POSTPHRASE = BoolSearchDel.infix_to_postfix(INPUT_WORDS)
         OLD_INPUT_WORDS = copy.deepcopy(POSTPHRASE)
-        P = []
-        for i in POSTPHRASE:
-            P = str(POSTPHRASE[0][i]).split(' ')
-        corrected = SpellCorrect.correct_word([P,], item_list)
+        corrected = SpellCorrect.correct_word(POSTPHRASE, item_list)
         if corrected != None:
             if not operator.eq(OLD_INPUT_WORDS, corrected):
                 print("Maybe you are searching for %s" % " ".join(list(map(" ".join, corrected))))
