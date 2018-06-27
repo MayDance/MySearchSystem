@@ -1,15 +1,19 @@
 import numpy as np
 
 
-def correct_word(word, item_list):
-    word_pairs = []
-    for item in item_list:
-        word_pairs.append([word, item])
-    dis = list(map(edit_distance, word_pairs))
-    if min(dis) > 2:
-        return None
-    else:
-        return word_pairs[dis.index(min(dis))][1]
+def correct_word(word_list, item_list):
+    for words in word_list:
+        for word in words:
+            if (word not in item_list) or (word != "AND") or (word != "OR") or (word != "NOT"):
+                word_pairs = []
+                for item in item_list:
+                    word_pairs.append([word, item])
+                dis = list(map(edit_distance, word_pairs))
+                if min(dis) > 2:
+                    return None
+                else:
+                    words[words.index(word)] = word_pairs[dis.index(min(dis))][1]
+    return word_list
 
 
 def edit_distance(word_pair):

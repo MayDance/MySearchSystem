@@ -1,5 +1,8 @@
 import os
 import tools
+import html
+import operator
+import copy
 import nltk
 from SpellCorrect import SpellCorrect
 from InvertedIndex import getIndex
@@ -8,6 +11,7 @@ from Searching import searchWord
 from BoolSearch import BoolSearchDel
 from scoreQuery import sortDoc
 from TermDocWeightMatrix import TermDocWeight
+
 
 print("The first time to load this System?[Y]/[N]")
 choose = input()
@@ -27,13 +31,12 @@ if choose == "Y":
     tdm.build_tdwm()
 print("getting vector space")
 tdm.load_tdwm()
-#print(item_list)
-#print(doc_num)
-#print(doc_list)
+# print(item_list)
+# print(doc_num)
+# print(doc_list)
 
 DTWEIGHT = tdm.get_tdwm()
-print(DTWEIGHT);
-print(DTWEIGHT.sum(axis=1))
+print(type(DTWEIGHT));
 print("loading the wordnet...")
 
 LOOP = True
@@ -50,9 +53,19 @@ while LOOP:
 
         print("Normalizing query statement...")
         INPUT_WORDS = languageAnalysis.normalize(STATEMENT, True)
-        print(INPUT_WORDS)
-
-        DOC_LIST = BoolSearchDel.bool_search(INPUT_WORDS, INDEX)
+        print(" ".join(INPUT_WORDS))
+        POSTPHRASE = BoolSearchDel.infix_to_postfix(INPUT_WORDS)
+        OLD_INPUT_WORDS = copy.deepcopy(POSTPHRASE)
+        corrected = SpellCorrect.correct_word(POSTPHRASE, item_list)
+        if corrected != None:
+            if not operator.eq(OLD_INPUT_WORDS, corrected):
+                print("Maybe you are searching for %s" % " ".join(list(map(" ".join, corrected))))
+                DOC_LIST = BoolSearchDel.bool_search(POSTPHRASE, INDEX)
+            else:
+                DOC_LIST = BoolSearchDel.bool_search(POSTPHRASE, INDEX)
+        else:
+            print("Nothing found. Please check if you spell correctly.")
+            DOC_LIST = []
     elif method == "SCORE":
         print("input the query statement(EXIT to quit):")
         STATEMENT = input()
@@ -62,27 +75,17 @@ while LOOP:
         K = input()
         print("Normalizing query statement...")
         INPUT_WORDS = languageAnalysis.normalize(STATEMENT, True)
-        print(INPUT_WORDS)
+        print(" ".join(INPUT_WORDS))
         OLD_INPUT_WORDS = INPUT_WORDS.copy()
-        valid_input = True
-        for word in INPUT_WORDS:
-            if word in item_list:
-                continue
-            else:
-                corrected = SpellCorrect.correct_word(word, item_list)
-                if corrected != None:
-                    INPUT_WORDS[INPUT_WORDS.index(word)] = corrected
-                else:
-                    print("Nothing found. Please check if you spell correctly.")
-                    valid_input = False
-                    break
-        if valid_input:
-            if OLD_INPUT_WORDS != INPUT_WORDS:
-                print("Maybe you are searching for %s" % INPUT_WORDS)
+        corrected = SpellCorrect.correct_word([INPUT_WORDS, ], item_list)
+        if corrected != None:
+            if OLD_INPUT_WORDS != corrected[0]:
+                print("Maybe you are searching for %s" % " ".join(INPUT_WORDS))
                 DOC_LIST = sortDoc.score_search(INPUT_WORDS, tdm, INDEX, K)
             else:
                 DOC_LIST = sortDoc.score_search(INPUT_WORDS, tdm, INDEX, K)
         else:
+            print("Nothing found. Please check if you spell correctly.")
             DOC_LIST = []
     elif method == "EXIT":
         break
