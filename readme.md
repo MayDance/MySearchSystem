@@ -107,7 +107,9 @@ python main.py
 
 &emsp;&emsp;如上所示，我们首先对将文档ID列表转成距离列表，对位置信息做同样的处理，然后对这些距离列表使用可变字节码压缩，最后将其写到硬盘中。在每次加载时对其进行解码恢复，重新构建索引。
 &emsp;&emsp;压缩效果如下所示：
+
 ![compress_result](resource/compress_result.png)
+
 &emsp;&emsp;压缩比率大致在68%。
 
 ## 向量空间模型
