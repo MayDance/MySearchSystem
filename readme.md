@@ -35,7 +35,9 @@ python main.py
     - 输入：BOOL
 - input the query statement(EXIT to quit):
     - 布尔输入样例（NOT AND OR需要大写）：NOT word1 AND word2 OR word3
+    - 优先级NOT > AND > OR，可以使用括号更改优先级
     - 短语查询直接输入需要查询短语
+    - 布尔输入中可以存在短语 ：NOT word1 AND word2 word3
 - 输出
     - 首先输出拼音矫正结果，再输出查询结果（文档数目+文档列表）
 ### TOP-K 查询
@@ -96,33 +98,92 @@ python main.py
 将pop得到的K个元素返回。
 
 ## 短语查询
-利用带位置信息的倒排索引。
+利用带位置信息的倒排索引获得出现每一个单词的文档列表，接着取所有文档列表的交集。
 
-首先得到包含query中所有单词的文档列表的交集。
+从这个文档集中根据位置索引查找是否有匹配的短语。
 
-从这些文档集中根据位置索引查找是否有匹配的短语。
+具体查找方式：遍历第一个词项在文档中的位置，依次检测后面的词项位置中是否包含与其匹配的位置。
 
-遍历第一个词项在文档中的位置，依次检测后面的词项位置中是否包含与其匹配的位置。
+```
+def search_bool_phrase(index, word_list, flag):
+    if len(word_list) == 0:
+        return []
+    #找词
+    doc_queue = queue.Queue()
+    for word in word_list:
+        doc_queue.put(search_single_word(index, word))
+    #取交集
+    while doc_queue.qsize() > 1:
+        list1 = doc_queue.get()
+        list2 = doc_queue.get()
+        doc_queue.put(operateDocList.and_list(list1, list2))
+    doc_list = doc_queue.get()
+    #NOT情况
+    if len(word_list) == 1:
+        if flag:
+            return doc_list
+        else:
+            return operateDocList.minus_list(tools.wholeDocList, doc_list)
 
-## 通配符查询
-利用正则表达式找到所有匹配的词项，利用倒排索引检索出词项对应的文档。
-
-支持通配符的短语查询：
-
-首先将检索到的词项存在一个二维数组中，随后对出现的每个短语组合进行短语查询。
-
-## 同义词查询
-同样利用nltk语言处理库获取单个单词的同义词列表（有可能是短语）
-
-随后对每个单词或者短语进行检索，获取文档集。
+    res_list = []
+    #根据位置索引查找匹配
+    for doc_id in doc_list:
+        # doc_id = str(doc_id)
+        # print(index[word_list[0]]["doc_list"])
+        for loc in index[word_list[0]]["doc_list"][doc_id]["positions"]:
+            file_loc = loc
+            has_find = True
+            for word in word_list[1:len(word_list)]:
+                file_loc += 1
+                try:
+                    index[word]["doc_list"][doc_id]["positions"].index(file_loc)
+                except:
+                    has_find = False
+                    break
+            if has_find:
+                res_list.append(int(doc_id))
+                break
+    if flag:
+        return res_list
+    else:
+        return operateDocList.minus_list(tools.wholeDocList, res_list)
+ ```
 
 ## BOOL查询
 
-- 将查询表达式转为后序表达式：
-如 A OR B AND C 转为
-     A B C AND OR 
+- 将中缀查询表达式通过栈操作转为后序表达式：如 A OR B AND C 转为 A B C AND OR 
 
-- 用一个栈来计算后序表达式
+- 同时完成短语划分，如A B AND C将被转为[[A B],[C],[AND]]
+
+- 计算后缀表达式，其中search.search_bool_phrase方法即短语查询方法，flag表示是否需要取反集
+```
+        if item != 'AND' and item != 'OR':
+            if i < limit - 1:
+                if postfix[i + 1] == "NOT":
+                    i = i + 1
+                    result.append(search.search_bool_phrase(index, item, flag=False))
+                else:
+                    result.append(search.search_bool_phrase(index, item, flag=True))
+            else:
+                result.append(search.search_bool_phrase(index, item, flag=True))
+        elif item == 'AND':
+            if len(result) < 2:
+                print("illegal query")
+                return []
+            else:
+                list1 = result.pop()
+                list2 = result.pop()
+                result.append(listSort.and_list(list1, list2))
+        elif item == 'OR':
+            if len(result) < 2:
+                print("illegal query")
+                return []
+            else:
+                list1 = result.pop()
+                list2 = result.pop()
+                result.append(listSort.merge_list(list1, list2))
+```
+
 
 ## 拼写矫正
 ![](https://raw.githubusercontent.com/TaiyouDong/SearchingSystem/master/img/img1.png)

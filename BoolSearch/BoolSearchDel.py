@@ -81,7 +81,6 @@ def phrase_to_list(list):
 
 def bool_search(postfix, index):
     postfix = phrase_to_list(postfix)
-    # postfix = infix_to_postfix(query)
     result = []
     limit = len(postfix)
     i = 0
